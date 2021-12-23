@@ -26,7 +26,7 @@ After building the authorizer, `aws-phantom-token-plugin.zip` can be uploaded an
 1. Choose `Create Function`
 2. Select the `Author from scratch` option, set a name and choose the `Node.js 14.x` runtime.
 3. Click `Create function` 
-4. The default `Hello from Lambda` code is displayed. Choose `Upload from` and from the drop-down select `.zip file`. Brows to `aws-phantom-token-plugin.zip` and upload.
+4. The default `Hello from Lambda` code is displayed. Choose `Upload from` and from the drop-down select `.zip file`. Browse to `aws-phantom-token-plugin.zip` and upload the file.
 
 ## Configuration
 
@@ -40,6 +40,20 @@ PORT | The runtime port of the Curity Identity Server
 SCOPE | Required scopes for API access (space separated string)
 CLIENT_ID | The client_id of a client with the `introspection` capability
 CLIENT_SECRET | The secret of the client with the `introspection` capability
+
+### Add JWT to Authorization header
+
+The JWT from the intropsection response should be forwarded to the upstream API. 
+
+For the API protected, go to `Integration Request`, expand `HTTP Headers` and add a header named `Authorization` that is mapped from `context.authorizer.Authorization`.
+
+<img src="./doc/authorization-header.png" alt="Authorization header" width="800"/>
+
+### Enable Authorization caching
+
+The Authorizer returns an AWS IAM Policy that allows or denies the request. The IAM Policy can be cached by the API Gateway to optimize performance. If the same opaque token is sent in the request the API Gateway will look up the cached IAM Policy and the Authorizer will not be executed and with that no introspection call is made to the Curity Identity Server.
+
+<img src="./doc/configure-cache.png" alt="Enable caching" width="500"/>
 
 ## More Information
 
