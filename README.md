@@ -9,7 +9,7 @@ An AWS Lambda Authorizer implementing the [Phantom Token Pattern](https://curity
 
 The AWS API Gateway does not have built-in capabilities for introspecting opaque access tokens. It is however possible to extend the capabilities of the gateway with [Lambda Authorizer functions](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-use-lambda-authorizer.html).
 
-The AWS Phantom Token Lambda Authorizer implements the Phantom Token Pattern. An opaque access token is passed in the Authorize header to the gateway. The gatewat invokes the authorizer that will intrispect the token using the `application/jwt` header in order to receive a JWT in the response.
+The AWS Phantom Token Lambda Authorizer implements the Phantom Token Pattern. An opaque access token is passed in the Authorize header to the gateway. The gateway invokes the authorizer that will introspect the token using the `application/jwt` header in order to receive a JWT in the response.
 
 The authorizer can also be configured to verify that a set of required scopes are present in the `scope` claim in the JWT or otherwise deny access to the requested API.
 
