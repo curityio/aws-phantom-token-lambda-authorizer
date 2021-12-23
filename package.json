@@ -1,0 +1,26 @@
+{
+  "name": "aws-phantom-token-plugin",
+  "version": "0.1.0",
+  "description": "An AWS Lambda Authorizer that handles the Phantom Token Pattern",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "package": "npm run clean && npm install ; zip aws-phantom-token-plugin.zip -r *.js *.json .env node_modules/",
+    "clean": "rm -rf node_modules && rm -f aws-phantom-token-plugin.zip"
+  },
+  "keywords": [
+    "oauth",
+    "oidc",
+    "curity",
+    "aws",
+    "lambda",
+    "authorizer",
+    "phantom-token"
+  ],
+  "author": "Jonas Iggbom - Curity",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "https": "^1.0.0"
+  }
+}
