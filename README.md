@@ -13,6 +13,8 @@ The AWS Phantom Token Lambda Authorizer implements the Phantom Token Pattern. An
 
 The authorizer can also be configured to verify that a set of required scopes are present in the `scope` claim in the JWT or otherwise deny access to the requested API.
 
+With a minor configuration the AWS API Gateway will forward the JWT from the introspection response in the `Authorize` header to the upstream API enabling a Zero Trust approach. The API in itself could also be leverage a Zero Trust design where the JWT holds the public key details for self-contained JWT verification as exemplified in this [Serverless API](https://github.com/curityio/serverless-zero-trust-api).
+
 ## Building the Lambda Authorizer
 
 1. Clone the repository.
@@ -24,7 +26,7 @@ The authorizer can also be configured to verify that a set of required scopes ar
 After building the authorizer, `aws-phantom-token-plugin.zip` can be uploaded and deployed as a Lambda Function in the AWS Console.
 
 1. Choose `Create Function`
-2. Select the `Author from scratch` option, set a name and choose the `Node.js 14.x` runtime.
+2. Select the `Author from scratch` option, set a name (ex. `curity-phantom-token-authorizer`) and choose the `Node.js 14.x` runtime.
 3. Click `Create function` 
 4. The default `Hello from Lambda` code is displayed. Choose `Upload from` and from the drop-down select `.zip file`. Browse to `aws-phantom-token-plugin.zip` and upload the file.
 
