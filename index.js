@@ -42,7 +42,6 @@ function generatePolicyStatement(methodArn, action) {
   return statement;
 }
   
-/* Generate an IAM policy */
 function generatePolicy(principalId, policyStatements) {
   const authResponse = {};
   authResponse.principalId = principalId;
@@ -53,13 +52,15 @@ function generatePolicy(principalId, policyStatements) {
   return authResponse;
 }
 
+/* Generate an IAM policy */
 function generateIAMPolicy(providedScope, user, methodArn) {
   const policyStatements = [];
   
   /* Check if token scopes exist in API Permission */
   let hasScopes =  verifyScope(providedScope, process.env.SCOPE);
   if ( hasScopes ) {
-    policyStatements.push(generatePolicyStatement(methodArn, "Allow"));
+    policyStatements.push(generatePolicyStatement(getServiceArn(methodArn), "Allow")); //Wildcard path generated. Needed if IAM policies are cached and multipe API paths are using the Authorizer
+    // policyStatements.push(generatePolicyStatement(methodArn, "Allow")); //Used for a more strict approach with no caching of IAM policies.
   }
 
   /* Check if no policy statement is generated, if so, return default deny all policy statement */
@@ -72,7 +73,7 @@ function generateIAMPolicy(providedScope, user, methodArn) {
 
 /* Verify provded scope against configured required scope */
 function verifyScope(providedScope, requiredScope) {
-  let returnValue = true
+  let returnValue = true;
 
   if(!requiredScope) { 
     return returnValue;
@@ -86,7 +87,7 @@ function verifyScope(providedScope, requiredScope) {
       returnValue = false;
       break;
     }
-  };
+  }
 
   return returnValue;
 }
@@ -115,6 +116,27 @@ function introspect(options, data) {
     req.write(data);
     req.end();
   });
+}
+
+function getServiceArn(methodArn) {
+
+    // Get the last part, such as cqo3riplm6/default/GET/products
+    const parts = methodArn.split(':');
+    if (parts.length === 6) {
+
+        // Split the path into parts
+        const pathParts = parts[5].split('/');
+        if (pathParts.length >= 4) {
+
+            // Update the final part to a wildcard value such as cqo3riplm6/mystage/*, to apply to all lambdas in the API
+            parts[5] = `${pathParts[0]}/${pathParts[1]}/*`;
+            const result = parts.join(':');
+            return result;
+        }
+    }
+
+    // Sanity check
+    throw new Error(`Unexpected method ARN received: ${methodArn}`);
 }
 
 exports.handler = async function(event, context) {

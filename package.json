@@ -4,7 +4,6 @@
   "description": "An AWS Lambda Authorizer that handles the Phantom Token Pattern",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "package": "npm run clean && npm install ; zip aws-phantom-token-plugin.zip -r *.js *.json .env node_modules/",
     "clean": "rm -rf node_modules && rm -f aws-phantom-token-plugin.zip"
   },
