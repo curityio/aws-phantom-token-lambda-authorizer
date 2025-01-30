@@ -25,10 +25,11 @@ With a minor configuration the AWS API Gateway will forward the JWT from the int
 
 After building the authorizer, `aws-phantom-token-plugin.zip` can be uploaded and deployed as a Lambda Function in the AWS Console.
 
-1. Choose `Create Function`
-2. Select the `Author from scratch` option, set a name (ex. `curity-phantom-token-authorizer`) and choose the `Node.js 14.x` runtime.
+1. Choose `Create function`
+2. Select the `Author from scratch` option, set a function name (ex. `curity-phantom-token-authorizer`), choose the `Node.js 22.x` runtime and `x86_64` as the architecture.
 3. Click `Create function` 
 4. The default `Hello from Lambda` code is displayed. Choose `Upload from` and from the drop-down select `.zip file`. Browse to `aws-phantom-token-plugin.zip` and upload the file.
+5. Click `Deploy` to deploy the Lambda function
 
 ## Configuration
 
@@ -45,17 +46,17 @@ CLIENT_SECRET | The secret of the client with the `introspection` capability
 
 ### Add JWT to Authorization header
 
-The JWT from the intropsection response should be forwarded to the upstream API. 
+The JWT from the introspection response should be forwarded to the upstream API. 
 
-For the API protected, go to `Integration Request`, expand `HTTP Headers` and add a header named `Authorization` that is mapped from `context.authorizer.Authorization`.
+For the API protected, go to `Integration Request`, click `Edit`, expand the `URL request headers parameters` and add a header named `Authorization` that is mapped from `context.authorizer.Authorization`.
 
-<img src="./doc/authorization-header.png" alt="Authorization header" width="800"/>
+<img src="./doc/authorization-header.jpg" alt="Authorization header" width="800"/>
 
 ### Enable Authorization caching
 
-The Authorizer returns an AWS IAM Policy that allows or denies the request. The IAM Policy can be cached by the API Gateway to optimize performance. If the same opaque token is sent in the request the API Gateway will look up the cached IAM Policy and the Authorizer will not be executed and with that no introspection call is made to the Curity Identity Server.
+The Authorizer returns an AWS IAM Policy that allows or denies the request. The IAM Policy can be cached by the API Gateway to optimize performance. If the same opaque token is sent in the request the API Gateway will look up the cached IAM Policy and the Authorizer will not be executed resulting in no introspection call to the Curity Identity Server.
 
-<img src="./doc/configure-cache.png" alt="Enable caching" width="500"/>
+<img src="./doc/configure-cache.jpg" alt="Enable caching" width="500"/>
 
 ## More Information
 
