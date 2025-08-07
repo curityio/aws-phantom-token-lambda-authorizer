@@ -9,11 +9,11 @@ An AWS Lambda Authorizer implementing the [Phantom Token Pattern](https://curity
 
 The AWS API Gateway does not have built-in capabilities for introspecting opaque access tokens. It is however possible to extend the capabilities of the gateway with [Lambda Authorizer functions](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-use-lambda-authorizer.html).
 
-The AWS Phantom Token Lambda Authorizer implements the Phantom Token Pattern. An opaque access token is passed in the Authorize header to the gateway. The gateway invokes the authorizer that will introspect the token using the `application/jwt` header in order to receive a JWT in the response.
+The AWS Phantom Token Lambda Authorizer implements the Phantom Token Pattern. An opaque access token is passed in the Authorization header to the gateway. The gateway invokes the authorizer that will introspect the token using the `application/jwt` header in order to receive a JWT in the response.
 
 The authorizer can also be configured to verify that a set of required scopes are present in the `scope` claim in the JWT or otherwise deny access to the requested API.
 
-With a minor configuration the AWS API Gateway will forward the JWT from the introspection response in the `Authorize` header to the upstream API enabling a Zero Trust approach. The API in itself could also be leverage a Zero Trust design where the JWT holds the public key details for self-contained JWT verification as exemplified in this [Serverless API](https://github.com/curityio/serverless-zero-trust-api).
+With a minor configuration the AWS API Gateway will forward the JWT from the introspection response in the `Authorization` header to the upstream API enabling a Zero Trust approach. The API in itself could also be leverage a Zero Trust design where the JWT holds the public key details for self-contained JWT verification as exemplified in this [Serverless API](https://github.com/curityio/serverless-zero-trust-api).
 
 ## Building the Lambda Authorizer
 
